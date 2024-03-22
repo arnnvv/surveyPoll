@@ -6,10 +6,12 @@ const prisma = new PrismaClient().$extends(withAccelerate());
 export interface Option {
   text: string;
   votes?: number;
+  id?: string;
 }
 export interface Question {
   text: string;
   options: Option[];
+  id?: string;
 }
 
 export interface Survey {
@@ -100,7 +102,25 @@ const put = async (id: string, data: Partial<Survey>): Promise<void> => {
   try {
     await prisma.survey.update({
       where: { id },
-      data,
+      data: {
+        title: data.title,
+        questions: {
+          updateMany: data.questions?.map((question) => ({
+            where: { id: question.id },
+            data: {
+              text: question.text,
+              options: {
+                updateMany: question.options?.map((option) => ({
+                  where: { id: option.id },
+                  data: {
+                    text: option.text,
+                  },
+                })),
+              },
+            },
+          })),
+        },
+      },
       include: {
         questions: {
           include: {
@@ -109,6 +129,7 @@ const put = async (id: string, data: Partial<Survey>): Promise<void> => {
         },
       },
     });
+    console.log("Survey updated successfully");
   } catch (error) {
     console.error(`Error in Updating Survey: ${error}`);
     throw error;
