@@ -12,8 +12,12 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@prisma/client": "5.11.0",
+    "@prisma/extension-accelerate": "latest",
     "@types/express": "latest",
     "express": "latest",
+    "install": "^0.13.0",
+    "npm": "^10.5.0",
     "prisma": "latest"
   }
 }

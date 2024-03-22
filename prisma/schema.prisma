@@ -13,21 +13,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-modle Survey {
-    id         String    @id @default(@uuid())
-    title      String
-    questions  Question[]
-  }
+model Survey {
+  id        String      @id @default(uuid())
+  title     String
+  questions Question[]
+}
 
-  model Question {
-    id         String    @id @default(@uuid())
-    text       String
-    options    Option[]
-    surveyId   String
-    survey     Survey    @relation(fields: [surveyId], references: [id])
-  }
+model Question {
+  id       String      @id @default(uuid())
+  text     String
+  options  Option[]
+  surveyId String
+  Survey   Survey   @relation(fields: [surveyId], references: [id])
+}
 
-  model Option {
-    id         String    @id @default(@uuid())
-    text       String
-  }
+model Option {
+  id          String      @id @default(uuid())
+  text        String
+  votes       Int      @default(0)
+  questionId  String
+  Question    Question @relation(fields: [questionId], references: [id])
+}
