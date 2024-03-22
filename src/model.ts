@@ -19,7 +19,7 @@ export interface Survey {
   questions: Question[];
 }
 
-const getAll = async (): Promise<Survey[]> => {
+export const getAll = async (): Promise<Survey[]> => {
   try {
     console.log("Surveys fetched successfully");
     const surveys = await prisma.survey.findMany({
@@ -52,7 +52,7 @@ const getAll = async (): Promise<Survey[]> => {
   }
 };
 
-const get = async (id: string): Promise<Survey | null> => {
+export const get = async (id: string): Promise<Survey | null> => {
   try {
     return await prisma.survey.findUnique({
       where: { id },
@@ -72,7 +72,7 @@ const get = async (id: string): Promise<Survey | null> => {
   }
 };
 
-const post = async (data: Survey): Promise<void> => {
+export const post = async (data: Survey): Promise<void> => {
   try {
     await prisma.survey.create({
       data: {
@@ -98,7 +98,7 @@ const post = async (data: Survey): Promise<void> => {
   }
 };
 
-const put = async (id: string, data: Partial<Survey>): Promise<void> => {
+export const put = async (id: string, data: Partial<Survey>): Promise<void> => {
   try {
     await prisma.survey.update({
       where: { id },
@@ -138,7 +138,7 @@ const put = async (id: string, data: Partial<Survey>): Promise<void> => {
   }
 };
 
-const deleteById = async (id: string): Promise<void> => {
+export const deleteById = async (id: string): Promise<void> => {
   try {
     await prisma.survey.delete({
       where: {
@@ -159,12 +159,4 @@ const deleteById = async (id: string): Promise<void> => {
   } finally {
     await prisma.$disconnect();
   }
-};
-
-module.exports = {
-  getAll,
-  get,
-  post,
-  put,
-  deleteById,
 };
